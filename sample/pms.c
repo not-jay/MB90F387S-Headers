@@ -1,3 +1,7 @@
+/**
+ * Parking Lot Management System (PMS)
+ */
+
 #include "_ffmc16.h"
 #include "extern.h"
 #include "monitor.h"
