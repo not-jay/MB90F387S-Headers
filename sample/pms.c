@@ -14,7 +14,7 @@ void main() {
     Device leds[4];
     Device sensor[4];
     Device sevenseg = defineDevice(DDR5, PDR5, BYTE);
-    Stepper stepper = defineStepper(DDR2, PDR2, 4, 7);
+    Stepper stepper = defineStepper(DDR2, PDR2, 4);
     int i, lastFree = 0, freeSlots = 0;
 
     for(i = 0; i < 4; i++) {
