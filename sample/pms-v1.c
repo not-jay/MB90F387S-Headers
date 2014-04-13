@@ -1,5 +1,10 @@
 /**
- * Parking Lot Management System (PMS)
+ * Parking Lot Management System (PMS) v1
+ *
+ * Changelog:
+ *  - Sensors set LEDs directly, instead of interfacing them via MB90F387S
+ *  - Moved sevenseg from Port 5 to Port 2
+ *  - Moved stepper motor from Port 2 to Port 3
  */
 
 #include "_ffmc16.h"
@@ -11,17 +16,13 @@
 #include "..\sevenseg.h"
 
 void main() {
-    Device leds[4];
     Device sensor[4];
-    Device sevenseg = defineDevice(DDR5, PDR5, BYTE);
-    Stepper stepper = defineStepper(DDR2, PDR2, 4, 7);
+    Device sevenseg = defineDevice(DDR2, PDR2, BYTE);
+    Stepper stepper = defineStepper(DDR3, PDR3, 0, 3);
     int i, lastFree = 0, freeSlots = 0;
 
     for(i = 0; i < 4; i++) {
-        leds[i] = defineDevice(DDR2, PDR2, i);
         sensor[i] = defineDevice(DDR1, PDR1, i);
-
-        setDirection(&leds[i], OUTPUT);
         setDirection(&sensor[i], INPUT);
     }
     setResolution(&stepper, 0.9f);
@@ -32,27 +33,25 @@ void main() {
 
     //Logic:
     //  Read sensors
-    //  Set LEDs while counting free slots
     //  Display free slots (mu update lng kung ni change ang value)
     //  change stepper's target angle if conditions are true (optimized na ni, dli mu re-set sa angles if same na)
     //  single step sa stepper motor (optimized to not move at all kung na reach na ang target angle) :)
 
     //With optimization in mind, ang /always/ na mu fire na functions kay:
     // - sensor reading
-    // - LED setting
 
     //so "overkill" na kung mag task scheduling
     //since, wala ma'y tasks na pde ma parallel ug buhat ani
+
+    display(&sevenseg, 0, true);
     while(true) {
         //Read sensors
         //HIGH  - Wala'y na detect ang sensor
         //LOW   - Naa'y something sa sensor
         for(i = 0; i < 4; i++) {
-            unsigned char isFree = getData(&sensor[i]);
             //if HIGH/true, therefore, free ang slot
             //then set LEDs accordingly (basically follow lng sa status sa sensor)
-            if(isFree) freeSlots++;
-            setData(&leds[i], isFree);
+            if(getData(&sensor[i])) freeSlots++;
         }
 
         //Display freeSlots on 7seg (only update, if it needs updating)
