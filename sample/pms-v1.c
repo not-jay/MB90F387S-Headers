@@ -4,7 +4,7 @@
  * Changelog:
  *  - Sensors set LEDs directly, instead of interfacing them via MB90F387S
  *  - Moved sevenseg from Port 5 to Port 2
- *  - Moved stepper motor from Port 2 to Port 3
+ *  - Moved stepper motor from Port 2 to Port 1
  */
 
 #include "_ffmc16.h"
@@ -18,7 +18,7 @@
 void main() {
     Device sensor[4];
     Device sevenseg = defineDevice(DDR2, PDR2, BYTE);
-    Stepper stepper = defineStepper(DDR3, PDR3, 0, 3);
+    Stepper stepper = defineStepper(DDR1, PDR1, 4);
     int i, lastFree = 0, freeSlots = 0;
 
     for(i = 0; i < 4; i++) {

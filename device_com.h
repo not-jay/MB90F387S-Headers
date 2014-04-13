@@ -5,7 +5,7 @@
 
 typedef enum {LOW, HIGH} InputLevel;
 typedef enum {INPUT, OUTPUT} DataDirection;
-typedef enum {ADER_GPIO, ADER_ANALOG} Port5;
+typedef enum {ADER_GPIO, ADER_ANALOG = 0xff} Port5;
 typedef enum {WORD = -2, BYTE = -1} PortType;
 
 #endif
