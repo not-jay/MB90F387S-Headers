@@ -26,7 +26,7 @@ void main() {
         setDirection(&sensor[i], INPUT);
     }
     setResolution(&stepper, 0.9f);
-    setDirection(&ader, 0x00); //set port 5 to GPIO
+    setDirection(&ader, ADER_GPIO); //set port 5 to GPIO
     initSevenSeg(&sevenseg); //contains sleep(1000);
 
     __set_il(7);
