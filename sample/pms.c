@@ -1,5 +1,5 @@
 /**
- * Parking Lot Management System (PMS)
+ * Parking Lot Management System (PMS) v0
  */
 
 #include "_ffmc16.h"
@@ -14,6 +14,7 @@ void main() {
     Device leds[4];
     Device sensor[4];
     Device sevenseg = defineDevice(DDR5, PDR5, BYTE);
+    Device ader = defineDevice(ADER, ADER, BYTE);
     Stepper stepper = defineStepper(DDR2, PDR2, 4);
     int i, lastFree = 0, freeSlots = 0;
 
@@ -25,6 +26,7 @@ void main() {
         setDirection(&sensor[i], INPUT);
     }
     setResolution(&stepper, 0.9f);
+    setDirection(&ader, 0x00); //set port 5 to GPIO
     initSevenSeg(&sevenseg); //contains sleep(1000);
 
     __set_il(7);
